@@ -17,11 +17,13 @@ public class Answer extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "writer_id")
     private User writer;
+
     @OneToOne
     @JoinColumn(name = "question_id")
     private Question question;
+
     private String contents;
     private boolean deleted = false;
 

@@ -8,15 +8,20 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Question extends BaseEntity{
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String contents;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "writer_id")
     private User writer;
+
+    @OneToOne(mappedBy = "answer")
+    private Answer answer;
+
     private boolean deleted = false;
 
     protected Question() {

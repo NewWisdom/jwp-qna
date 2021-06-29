@@ -5,6 +5,7 @@ import lombok.Setter;
 import qna.UnAuthorizedException;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -19,6 +20,11 @@ public class User extends BaseEntity {
     private String password;
     private String name;
     private String email;
+    @OneToMany(mappedBy = "question")
+    private List<Question> questions;
+
+    @OneToMany(mappedBy = "answer")
+    private List<Answer> answers;
 
     protected User() {
     }
