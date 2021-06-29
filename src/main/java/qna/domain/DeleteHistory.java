@@ -1,14 +1,20 @@
 package qna.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 public class DeleteHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
     @Enumerated(EnumType.STRING)
     private ContentType contentType;
     private Long contentId;
@@ -16,7 +22,7 @@ public class DeleteHistory {
     private User deletedById;
     private LocalDateTime createDate = LocalDateTime.now();
 
-    public DeleteHistory() {
+    protected DeleteHistory() {
 
     }
 

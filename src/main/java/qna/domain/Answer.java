@@ -1,24 +1,31 @@
 package qna.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import qna.NotFoundException;
 import qna.UnAuthorizedException;
 
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
-public class Answer {
+public class Answer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User writer;
     @OneToOne
+    @JoinColumn(name = "question_id")
     private Question question;
     private String contents;
     private boolean deleted = false;
 
-    public Answer() {
+    protected Answer() {
 
     }
 
@@ -48,38 +55,6 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setWriter(User writer) {
-        this.writer = writer;
-    }
-
-    public User getWriter() {
-        return writer;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
     }
 
     public boolean isDeleted() {

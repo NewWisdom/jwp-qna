@@ -1,19 +1,25 @@
 package qna.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
-public class Question {
+public class Question extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String contents;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User writer;
     private boolean deleted = false;
 
-    public Question() {
+    protected Question() {
 
     }
 
@@ -25,6 +31,12 @@ public class Question {
         this.id = id;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Question(String title, String contents, User writer) {
+        this.title = title;
+        this.contents = contents;
+        this.writer = writer;
     }
 
     public Question writeBy(User writer) {
@@ -40,29 +52,6 @@ public class Question {
         answer.toQuestion(this);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
 
     public boolean isDeleted() {
         return deleted;
@@ -70,14 +59,6 @@ public class Question {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public User getWriter() {
-        return writer;
-    }
-
-    public void setWriter(User writer) {
-        this.writer = writer;
     }
 
     @Override
