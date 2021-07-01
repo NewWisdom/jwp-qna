@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import qna.CannotDeleteException;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +31,7 @@ public class QuestionTest {
     @Test
     @DisplayName("질문 삭제 성공")
     void delete_success_1() throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = Q1.delete(JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q1.deleteReturnDeleteHistories(JAVAJIGI);
 
         assertAll(
                 () -> assertThat(Q1.isDeleted()).isTrue(),
@@ -45,7 +43,7 @@ public class QuestionTest {
     @DisplayName("다른 사람이 쓴 글일 경우 예외가 발생한다.")
     void delete_fail_1() {
         assertThatThrownBy(() ->
-                Q1.delete(UserTest.SANJIGI))
+                Q1.deleteReturnDeleteHistories(UserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
@@ -54,7 +52,7 @@ public class QuestionTest {
     void delete_success_2() throws CannotDeleteException {
         Q1.addAnswer(A1);
 
-        List<DeleteHistory> deleteHistories = Q1.delete(JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q1.deleteReturnDeleteHistories(JAVAJIGI);
 
         assertAll(
                 () -> assertThat(Q1.isDeleted()).isTrue(),
@@ -69,7 +67,7 @@ public class QuestionTest {
         Q1.addAnswer(A2);
 
         assertThatThrownBy(() ->
-                Q1.delete(JAVAJIGI))
+                Q1.deleteReturnDeleteHistories(JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }

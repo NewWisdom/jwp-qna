@@ -65,7 +65,7 @@ public class Question extends BaseEntity {
     }
 
 
-    public List<DeleteHistory> delete(User loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteReturnDeleteHistories(User loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         if (!writer.isSameUser(loginUser)) {
