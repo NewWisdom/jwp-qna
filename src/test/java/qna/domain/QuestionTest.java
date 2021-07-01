@@ -60,7 +60,6 @@ public class QuestionTest {
                 () -> assertThat(Q1.isDeleted()).isTrue(),
                 () -> assertThat(deleteHistories).contains(D1, D2)
         );
-        assertThat(Q1.isDeleted()).isTrue();
     }
 
     @Test

@@ -5,7 +5,6 @@ import lombok.Setter;
 import qna.CannotDeleteException;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @OneToMany(mappedBy = "question")
-    private List<Answer> answers = new ArrayList<>();
+    @Embedded
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -67,18 +66,9 @@ public class Question extends BaseEntity {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         writer.checkPermissionToDelete(loginUser);
-
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
         setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, this.getWriter()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        deleteHistories.addAll(answers.delete(loginUser));
         return deleteHistories;
     }
 
