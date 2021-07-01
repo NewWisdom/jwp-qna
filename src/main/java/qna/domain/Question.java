@@ -5,7 +5,10 @@ import lombok.Setter;
 import qna.CannotDeleteException;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -22,7 +25,7 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
@@ -62,14 +65,17 @@ public class Question extends BaseEntity {
     }
 
 
-    public void delete(User loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(User loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         if (!writer.isSameUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         if (answers.isEmpty()) {
             setDeleted(true);
-            return;
+            deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, this.getWriter()));
+            return deleteHistories;
         }
 
         for (Answer answer : answers) {
@@ -78,6 +84,15 @@ public class Question extends BaseEntity {
             }
         }
         setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, this.getWriter()));
+        for (Answer answer : answers) {
+            answer.setDeleted(true);
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        }
+        return deleteHistories;
+//        return new DeleteHistory(ContentType.QUESTION, id, this.getWriter(), LocalDateTime.now());
+//        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
+//        writer.addDeletedHistory(new DeleteHistory(ContentType.QUESTION, id, this.getWriter(), LocalDateTime.now()));
     }
 
     public boolean isDeleted() {

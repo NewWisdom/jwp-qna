@@ -5,6 +5,7 @@ import lombok.Setter;
 import qna.UnAuthorizedException;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,11 +21,14 @@ public class User extends BaseEntity {
     private String password;
     private String name;
     private String email;
-    @OneToMany(mappedBy = "question")
-    private List<Question> questions;
+    @OneToMany(mappedBy = "writer")
+    private List<Question> questions= new ArrayList<>();;
 
-    @OneToMany(mappedBy = "answer")
-    private List<Answer> answers;
+    @OneToMany(mappedBy = "writer")
+    private List<Answer> answers= new ArrayList<>();;
+
+    @OneToMany(mappedBy = "deletedById")
+    private List<DeleteHistory> deleteHistories = new ArrayList<>();
 
     protected User() {
     }
@@ -73,6 +77,10 @@ public class User extends BaseEntity {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public void addDeletedHistory(DeleteHistory deleteHistory){
+        this.deleteHistories.add(deleteHistory);
     }
 
     @Override
