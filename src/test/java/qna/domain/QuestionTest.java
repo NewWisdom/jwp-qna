@@ -22,6 +22,8 @@ public class QuestionTest {
 
     @BeforeEach
     void setUp() {
+        A1 = new Answer(UserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        A2 = new Answer(UserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
         Q1 = new Question("title1", "contents1").writeBy(JAVAJIGI);
         Q2 = new Question("title2", "contents2").writeBy(UserTest.SANJIGI);
         D1 = new DeleteHistory(ContentType.QUESTION, Q1.getId(), JAVAJIGI);

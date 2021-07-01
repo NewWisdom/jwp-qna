@@ -60,8 +60,8 @@ public class Question extends BaseEntity {
     }
 
     public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
         answers.add(answer);
+        answer.setQuestion(this);
     }
 
 
@@ -70,12 +70,6 @@ public class Question extends BaseEntity {
 
         if (!writer.isSameUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
-        if (answers.isEmpty()) {
-            setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, this.getWriter()));
-            return deleteHistories;
         }
 
         for (Answer answer : answers) {
@@ -90,9 +84,6 @@ public class Question extends BaseEntity {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         return deleteHistories;
-//        return new DeleteHistory(ContentType.QUESTION, id, this.getWriter(), LocalDateTime.now());
-//        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-//        writer.addDeletedHistory(new DeleteHistory(ContentType.QUESTION, id, this.getWriter(), LocalDateTime.now()));
     }
 
     public boolean isDeleted() {
