@@ -2,6 +2,7 @@ package qna.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import qna.CannotDeleteException;
 import qna.UnAuthorizedException;
 
 import javax.persistence.*;
@@ -22,10 +23,10 @@ public class User extends BaseEntity {
     private String name;
     private String email;
     @OneToMany(mappedBy = "writer")
-    private List<Question> questions= new ArrayList<>();;
+    private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "writer")
-    private List<Answer> answers= new ArrayList<>();;
+    private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "deletedById")
     private List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -79,7 +80,7 @@ public class User extends BaseEntity {
         return false;
     }
 
-    public void addDeletedHistory(DeleteHistory deleteHistory){
+    public void addDeletedHistory(DeleteHistory deleteHistory) {
         this.deleteHistories.add(deleteHistory);
     }
 
@@ -107,8 +108,10 @@ public class User extends BaseEntity {
         return Objects.hash(id, accountId, password, name, email);
     }
 
-    public boolean isSameUser(User loginUser) {
-        return this.equals(loginUser);
+    public void checkPermissionToDelete(User loginUser) throws CannotDeleteException {
+        if (!this.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 
     private static class GuestUser extends User {

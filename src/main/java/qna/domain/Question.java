@@ -7,8 +7,6 @@ import qna.CannotDeleteException;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -68,9 +66,7 @@ public class Question extends BaseEntity {
     public List<DeleteHistory> deleteReturnDeleteHistories(User loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        if (!writer.isSameUser(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+        writer.checkPermissionToDelete(loginUser);
 
         for (Answer answer : answers) {
             if (!answer.isOwner(loginUser)) {
