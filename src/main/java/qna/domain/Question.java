@@ -2,8 +2,11 @@ package qna.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import qna.CannotDeleteException;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +22,8 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @OneToOne(mappedBy = "answer")
-    private Answer answer;
+    @OneToMany(mappedBy = "answer")
+    private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
 
@@ -55,8 +58,27 @@ public class Question extends BaseEntity {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
+        answers.add(answer);
     }
 
+
+    public void delete(User loginUser) throws CannotDeleteException {
+        if (!writer.isSameUser(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if (answers.isEmpty()) {
+            setDeleted(true);
+            return;
+        }
+
+        for (Answer answer : answers) {
+            if (!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
+        }
+        setDeleted(true);
+    }
 
     public boolean isDeleted() {
         return deleted;
@@ -65,6 +87,7 @@ public class Question extends BaseEntity {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
 
     @Override
     public String toString() {

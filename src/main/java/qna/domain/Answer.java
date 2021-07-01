@@ -20,7 +20,7 @@ public class Answer extends BaseEntity {
     @JoinColumn(name = "writer_id")
     private User writer;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
 

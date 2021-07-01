@@ -99,6 +99,10 @@ public class User extends BaseEntity {
         return Objects.hash(id, accountId, password, name, email);
     }
 
+    public boolean isSameUser(User loginUser) {
+        return this.equals(loginUser);
+    }
+
     private static class GuestUser extends User {
         @Override
         public boolean isGuestUser() {
