@@ -45,13 +45,4 @@ class AnswerRepositoryTest {
                 () -> assertThat(saveAnswer.getContents()).isEqualTo(A1.getContents())
         );
     }
-
-    @Test
-    void findByQuestionIdAndDeletedFalse() {
-
-    }
-
-    @Test
-    void findByIdAndDeletedFalse() {
-    }
 }

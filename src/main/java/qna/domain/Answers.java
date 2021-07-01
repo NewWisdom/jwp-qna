@@ -1,7 +1,7 @@
 package qna.domain;
 
 import lombok.Getter;
-import qna.CannotDeleteException;
+import qna.exception.CannotDeleteException;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -26,7 +26,7 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(User loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(User loginUser) {
         checkForOtherWriter(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
@@ -36,7 +36,7 @@ public class Answers {
         return deleteHistories;
     }
 
-    private void checkForOtherWriter(User loginUser) throws CannotDeleteException {
+    private void checkForOtherWriter(User loginUser) {
         boolean isExistOtherWriter = answers.stream()
                 .anyMatch(answer -> !answer.isOwner(loginUser));
         if (isExistOtherWriter) {

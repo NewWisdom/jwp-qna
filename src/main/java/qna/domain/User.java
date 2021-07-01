@@ -2,8 +2,8 @@ package qna.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import qna.CannotDeleteException;
-import qna.UnAuthorizedException;
+import qna.exception.CannotDeleteException;
+import qna.exception.UnAuthorizedException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class User extends BaseEntity {
         return Objects.hash(id, accountId, password, name, email);
     }
 
-    public void checkPermissionToDelete(User loginUser) throws CannotDeleteException {
+    public void checkPermissionToDelete(User loginUser) {
         if (!this.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }

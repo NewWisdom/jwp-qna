@@ -2,7 +2,7 @@ package qna.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import qna.CannotDeleteException;
+import qna.exception.CannotDeleteException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +35,7 @@ class AnswersTest {
 
     @Test
     @DisplayName("답의 상태를 삭제로 만들고 삭제 이력을 반환한다.")
-    void delete_success() throws CannotDeleteException {
+    void delete_success() {
         Answers answers = new Answers(Arrays.asList(A1, A1));
         List<DeleteHistory> deleteHistories = answers.delete(JAVAJIGI);
 

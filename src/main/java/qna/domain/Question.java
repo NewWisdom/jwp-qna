@@ -2,7 +2,6 @@ package qna.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import qna.CannotDeleteException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class Question extends BaseEntity {
     }
 
 
-    public List<DeleteHistory> deleteReturnDeleteHistories(User loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteReturnDeleteHistories(User loginUser) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         writer.checkPermissionToDelete(loginUser);

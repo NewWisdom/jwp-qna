@@ -3,7 +3,7 @@ package qna.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import qna.CannotDeleteException;
+import qna.exception.CannotDeleteException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,7 +29,7 @@ public class UserTest {
 
     @Test
     @DisplayName("질문자와 로그인 사용자가 다를 경우 예외가 발생한다.")
-    void checkPermissionToDelete(){
+    void checkPermissionToDelete() {
         assertThatThrownBy(() ->
                 JAVAJIGI.checkPermissionToDelete(SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);

@@ -3,7 +3,7 @@ package qna.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import qna.CannotDeleteException;
+import qna.exception.CannotDeleteException;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문 삭제 성공")
-    void delete_success_1() throws CannotDeleteException {
+    void delete_success_1() {
         List<DeleteHistory> deleteHistories = Q1.deleteReturnDeleteHistories(JAVAJIGI);
 
         assertAll(
@@ -51,7 +51,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문에 같은 사용자의 답글만 있으면 성공한다.")
-    void delete_success_2() throws CannotDeleteException {
+    void delete_success_2() {
         Q1.addAnswer(A1);
 
         List<DeleteHistory> deleteHistories = Q1.deleteReturnDeleteHistories(JAVAJIGI);
