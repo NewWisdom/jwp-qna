@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static qna.domain.DeleteHistoryTest.D1;
 
 public class UserTest {
-    public static User JAVAJIGI = new User(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    public static User SANJIGI = new User(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
+    public static User JAVAJIGI = new User("javajigi", "password", "name", "javajigi@slipp.net");
+    public static User SANJIGI = new User( "sanjigi", "password", "name", "sanjigi@slipp.net");
 
     @BeforeEach
     void setUp() {
-        JAVAJIGI = new User(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-        SANJIGI = new User(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
+        JAVAJIGI = new User("javajigi", "password", "name", "javajigi@slipp.net");
+        SANJIGI = new User("sanjigi", "password", "name", "sanjigi@slipp.net");
     }
 
     @Test
